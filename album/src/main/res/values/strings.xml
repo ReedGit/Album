@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Album</string>
+    <string name="album_name">相册</string>
+    <string name="album_complete">完成</string>
+</resources>
