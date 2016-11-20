@@ -6,7 +6,7 @@ An Android library to open album for selecting pictures
 In your build.gradle:
 ```
 dependencies {
-    compile 'me.reed.album:album:0.1.0'
+    compile 'me.reed.album:album:x.y.z'
 }
 ```
 ##Usage

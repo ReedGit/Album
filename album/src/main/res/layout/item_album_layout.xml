@@ -25,13 +25,13 @@
         android:layout_width="119dp"
         android:layout_height="119dp"
         android:alpha="0.8"
-        android:scaleType="center" />
+        android:scaleType="centerCrop" />
 
     <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/checkbox_item_album"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        app:buttonTint="#FFFFFF" />
+        app:buttonTint="@color/checkbox_item" />
 
 </FrameLayout>
