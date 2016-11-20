@@ -1,3 +1,19 @@
+/*
+ * Copyright 2016 Reed.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package me.reed.album;
 
 import android.Manifest;
@@ -14,10 +30,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,14 +44,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AlbumActivity extends AppCompatActivity implements AlbumViewI {
+class AlbumActivity extends AppCompatActivity implements AlbumViewI {
 
     private static final int PERMISSION_CODE = 101;
-    public static final String PICTURE_COUNT = "picture_count";
-    public static final int RequestCode = 102;
-    public static final String PICTURE_SELECTED = "picture_selected";
 
-    private RecyclerView albumRecycler;
     private RecyclerView folderRecycler;
     private AlbumAdapter albumAdapter;
     private FolderAdapter folderAdapter;
@@ -50,7 +64,7 @@ public class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         initView();
         initClickListener();
         albumPresenter = new AlbumPresenter(this);
-        int total = getIntent().getIntExtra(PICTURE_COUNT, 1);//最多可选的图片数，如果没有，默认是一张
+        int total = getIntent().getIntExtra(AlbumUtil.PICTURE_COUNT, 1);//最多可选的图片数，如果没有，默认是一张
         albumPresenter.setTotal(total);
     }
 
@@ -97,15 +111,20 @@ public class AlbumActivity extends AppCompatActivity implements AlbumViewI {
     private void initView() {
         albumToolbar = (Toolbar) findViewById(R.id.toolbar_album);
         setSupportActionBar(albumToolbar);
-        albumRecycler = (RecyclerView) findViewById(R.id.recycler_album);
+
+        RecyclerView albumRecycler = (RecyclerView) findViewById(R.id.recycler_album);
         albumAdapter = new AlbumAdapter();
         albumRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         albumRecycler.setAdapter(albumAdapter);
+        albumRecycler.addItemDecoration(new DividerGridItemDecoration(this));
+
         folderTextView = (TextView) findViewById(R.id.tv_album_folder);
         completeTextView = (TextView) findViewById(R.id.tv_album_complete);
+
         folderRecycler = (RecyclerView) findViewById(R.id.recycler_folder);
         folderAdapter = new FolderAdapter();
         folderRecycler.setLayoutManager(new LinearLayoutManager(this));
+        folderRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         folderRecycler.setAdapter(folderAdapter);
     }
 
@@ -170,8 +189,8 @@ public class AlbumActivity extends AppCompatActivity implements AlbumViewI {
                     }
                 }
                 Intent intent = new Intent();
-                intent.putStringArrayListExtra(AlbumActivity.PICTURE_SELECTED, resultList);
-                setResult(AlbumActivity.RequestCode, intent);
+                intent.putStringArrayListExtra(AlbumUtil.PICTURE_SELECTED, resultList);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -227,5 +246,16 @@ public class AlbumActivity extends AppCompatActivity implements AlbumViewI {
     @Override
     public Activity getActivity() {
         return this;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (folderRecycler.getVisibility() == View.VISIBLE) {
+                folderRecycler.setVisibility(View.GONE);
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

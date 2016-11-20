@@ -1,5 +1,4 @@
 ##Album
---
 
 An Android library to open album for selecting pictures
 ##Geting Started
@@ -12,7 +11,6 @@ dependencies {
 }
 ```
 ##Usage
---
 
 When your want to open album for selecting pictures, follow the code:
 ```
@@ -24,7 +22,7 @@ AlbumUtil.getInstance().openAlbum(MainActivity.this,6, new AlbumUtil.AlbumCallba
                 });
 ```
 ##License
---
+
 ```
 Copyright 2016 Reed.
 

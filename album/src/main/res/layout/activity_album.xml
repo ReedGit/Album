@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2016 Reed.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -36,12 +52,13 @@
             android:visibility="gone" />
 
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/fl_album_operation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="?attr/colorPrimary"
+            android:orientation="horizontal"
             android:paddingBottom="16dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
@@ -49,20 +66,27 @@
 
             <TextView
                 android:id="@+id/tv_album_folder"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:background="@drawable/folder_background"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:ellipsize="marquee"
+                android:maxLines="1"
                 android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/tv_album_complete"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:maxLines="1"
                 android:text="@string/album_complete"
                 android:textColor="?android:attr/textColorPrimary" />
 
-        </FrameLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 
