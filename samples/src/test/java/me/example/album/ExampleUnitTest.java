@@ -1,4 +1,4 @@
-package me.reed.album;
+package me.example.album;
 
 import org.junit.Test;
 

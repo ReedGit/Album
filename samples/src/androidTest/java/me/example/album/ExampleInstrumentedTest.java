@@ -1,4 +1,4 @@
-package me.reed.album;
+package me.example.album;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
