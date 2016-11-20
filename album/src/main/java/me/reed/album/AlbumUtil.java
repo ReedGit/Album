@@ -18,20 +18,27 @@ package me.reed.album;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * the util of how to use the library
- * Created by reed on 2016/11/6.
+ * @author reed
  */
 public class AlbumUtil {
 
     static final String PICTURE_COUNT = "picture_count";
     static final String PICTURE_SELECTED = "picture_selected";
 
+    static final int COLOR_DEFAULT = 0;
+
     private volatile static AlbumUtil instance;
+
+    static int toolbarColor = COLOR_DEFAULT;
+
+    static int textColor = COLOR_DEFAULT;
 
 
     public interface AlbumCallback{
@@ -48,9 +55,30 @@ public class AlbumUtil {
                 }
             }
         }
+        textColor = COLOR_DEFAULT;
+        toolbarColor = COLOR_DEFAULT;
         return instance;
     }
 
+    public AlbumUtil setToolbarColor(int color){
+        toolbarColor = color;
+        return instance;
+    }
+
+    public AlbumUtil setToolbarColor(Context context, @ColorRes int color){
+        toolbarColor = ContextCompat.getColor(context, color);
+        return instance;
+    }
+
+    public AlbumUtil setTextColor(int color){
+        textColor = color;
+        return instance;
+    }
+
+    public AlbumUtil setTextColor(Context context, @ColorRes int color){
+        textColor = ContextCompat.getColor(context, color);
+        return instance;
+    }
 
     public void openAlbum(Context context, AlbumCallback callback) {
         openAlbum(context, 1, callback);

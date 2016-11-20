@@ -18,6 +18,9 @@ package me.reed.album;
 
 import java.util.List;
 
+/**
+ * @author reed
+ */
 class ImageFolder {
 
     private String name;

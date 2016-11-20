@@ -22,6 +22,9 @@ import android.app.Activity;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author reed
+ */
 interface AlbumViewI {
 
     Map<String, List<String>> getAlbum();

@@ -2,7 +2,6 @@
 
 An Android library to open album for selecting pictures
 ##Geting Started
---
 
 In your build.gradle:
 ```

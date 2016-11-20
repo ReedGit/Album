@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author reed
+ */
 class AlbumModel {
 
     private Map<String, ImageFolder> albumMap;//图库信息

@@ -27,7 +27,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-
+/**
+ * @author reed
+ */
 class FolderAdapter extends RecyclerView.Adapter {
 
     private List<ImageFolder> imageFolders;

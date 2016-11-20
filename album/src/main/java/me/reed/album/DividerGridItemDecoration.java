@@ -27,11 +27,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 /**
- * RecyclerView GridLayoutManager divider
- * Created by reed on 2016/11/13.
+ * @author reed
  */
-
-public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
+class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable mDivider;

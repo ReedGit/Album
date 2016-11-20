@@ -37,6 +37,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author reed
+ */
 class AlbumActivity extends AppCompatActivity implements AlbumViewI {
 
     private static final int PERMISSION_CODE = 101;
@@ -111,6 +115,11 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
     private void initView() {
         albumToolbar = (Toolbar) findViewById(R.id.toolbar_album);
         setSupportActionBar(albumToolbar);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.fl_album_operation);
+        if (AlbumUtil.toolbarColor != AlbumUtil.COLOR_DEFAULT){
+            albumToolbar.setBackgroundColor(AlbumUtil.toolbarColor);
+            linearLayout.setBackgroundColor(AlbumUtil.toolbarColor);
+        }
 
         RecyclerView albumRecycler = (RecyclerView) findViewById(R.id.recycler_album);
         albumAdapter = new AlbumAdapter();
@@ -126,6 +135,12 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         folderRecycler.setLayoutManager(new LinearLayoutManager(this));
         folderRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         folderRecycler.setAdapter(folderAdapter);
+
+        if (AlbumUtil.textColor != AlbumUtil.COLOR_DEFAULT){
+            albumToolbar.setTitleTextColor(AlbumUtil.textColor);
+            folderTextView.setTextColor(AlbumUtil.textColor);
+            completeTextView.setTextColor(AlbumUtil.textColor);
+        }
     }
 
     private void initClickListener() {

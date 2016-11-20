@@ -1,5 +1,6 @@
 package me.example.album;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +23,17 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlbumUtil.getInstance().openAlbum(MainActivity.this,6, new AlbumUtil.AlbumCallback() {
-                    @Override
-                    public void onResult(List<String> paths) {
-                        for (String path: paths) {
-                            Log.i("TAG", path);
-                        }
-                    }
-                });
+                AlbumUtil.getInstance().
+                        setToolbarColor(MainActivity.this, R.color.colorPrimary).
+                        setTextColor(Color.WHITE).
+                        openAlbum(MainActivity.this, 6, new AlbumUtil.AlbumCallback() {
+                            @Override
+                            public void onResult(List<String> paths) {
+                                for (String path : paths) {
+                                    Log.i("TAG", path);
+                                }
+                            }
+                        });
             }
         });
 
