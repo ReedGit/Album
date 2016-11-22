@@ -41,6 +41,10 @@ class AlbumAdapter extends RecyclerView.Adapter {
         this.selectedPaths = selectedPaths;
     }
 
+    public List<String> getPaths() {
+        return paths;
+    }
+
     public interface OnItemClickListener {
         void onClick(View view, int position);
 

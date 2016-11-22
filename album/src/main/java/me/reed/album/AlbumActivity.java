@@ -16,18 +16,8 @@
 
 package me.reed.album;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.DividerItemDecoration;
@@ -48,14 +38,12 @@ import java.util.Map;
 /**
  * @author reed
  */
-class AlbumActivity extends AppCompatActivity implements AlbumViewI {
-
-    private static final int PERMISSION_CODE = 101;
+class AlbumActivity extends BaseActivity implements AlbumViewI {
 
     private RecyclerView folderRecycler;
     private AlbumAdapter albumAdapter;
     private FolderAdapter folderAdapter;
-    private AlertDialog mAlertDialog;
+
     private AlbumPresenter albumPresenter;
     private Toolbar albumToolbar;
     private TextView folderTextView;
@@ -72,51 +60,11 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         albumPresenter.setTotal(total);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mAlertDialog == null || !mAlertDialog.isShowing()) {
-            requestPermission();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initData();
-                } else {
-                    mAlertDialog = new AlertDialog.Builder(AlbumActivity.this)
-                            .setMessage("您拒绝了存储访问权限，需前往“设置”赋予权限")
-                            .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Uri selfPackageUri = Uri.parse("package:" + getPackageName());
-                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                            selfPackageUri);
-                                    startActivity(intent);
-                                }
-                            })
-                            .setNegativeButton("关闭", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            })
-                            .create();
-                    mAlertDialog.show();
-                }
-                break;
-        }
-    }
-
     private void initView() {
         albumToolbar = (Toolbar) findViewById(R.id.toolbar_album);
         setSupportActionBar(albumToolbar);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.fl_album_operation);
-        if (AlbumUtil.toolbarColor != AlbumUtil.COLOR_DEFAULT){
+        if (AlbumUtil.toolbarColor != AlbumUtil.COLOR_DEFAULT) {
             albumToolbar.setBackgroundColor(AlbumUtil.toolbarColor);
             linearLayout.setBackgroundColor(AlbumUtil.toolbarColor);
         }
@@ -136,7 +84,7 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         folderRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         folderRecycler.setAdapter(folderAdapter);
 
-        if (AlbumUtil.textColor != AlbumUtil.COLOR_DEFAULT){
+        if (AlbumUtil.textColor != AlbumUtil.COLOR_DEFAULT) {
             albumToolbar.setTitleTextColor(AlbumUtil.textColor);
             folderTextView.setTextColor(AlbumUtil.textColor);
             completeTextView.setTextColor(AlbumUtil.textColor);
@@ -172,7 +120,11 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         albumAdapter.setOnItemClickListener(new AlbumAdapter.OnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                ArrayList<String> paths = (ArrayList<String>) albumAdapter.getPaths();
+                Intent intent = new Intent(AlbumActivity.this, DetailActivity.class);
+                intent.putStringArrayListExtra(DetailActivity.PICTURES, paths);
+                intent.putExtra(DetailActivity.POSITION, position);
+                startActivity(intent);
             }
 
             @Override
@@ -211,35 +163,8 @@ class AlbumActivity extends AppCompatActivity implements AlbumViewI {
         });
     }
 
-    private void requestPermission() {
-        int hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                mAlertDialog = new AlertDialog.Builder(this)
-                        .setMessage("我们需要存储权限用于访问图片")
-                        .setPositiveButton("了解", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(AlbumActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
-                            }
-                        })
-                        .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        })
-                        .create();
-                mAlertDialog.show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
-            }
-        } else {
-            initData();
-        }
-    }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         albumPresenter.setAlbum();
         List<ImageFolder> imageFolders = albumPresenter.getImageFolders();
         if (imageFolders == null || imageFolders.size() == 0) {

@@ -3,4 +3,5 @@
     <color name="folder_pressed_background">#80CBC4</color>
     <color name="checkbox_item">#FFFFFF</color>
     <color name="folder_item_text">#000000</color>
+    <color name="album_background">#000000</color>
 </resources>
